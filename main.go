@@ -14,16 +14,14 @@ import (
     "os"
 )
 
+var external = External{}
 type External struct {
   open func(string) (io.Reader,error)
 }
 
 func osopen_wrapper(s string) (io.Reader,error) {
-
   return os.Open(s)
 }
-
-var external = External{}
 
 func inject() {
     external.open = osopen_wrapper
