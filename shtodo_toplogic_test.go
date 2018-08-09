@@ -45,3 +45,28 @@ func Test_OpenTodo_FileOpenedOK_ReturnsOK(t *testing.T) {
   }
 }
 
+func Test_ReadTodo_ErrorOpening_ReturnsError(t *testing.T) {
+  external.open = MockOpen
+  mockopen_error = errors.New("error opening file")
+  mockopen_ioreader = bytes.NewBuffer([]byte{1,2})
+
+  _,err := ReadTodo("dummyfilenotexists.txt")
+  if err == nil {
+    t.Fatalf("Expected Error, got nil")
+  }
+}
+
+func Test_ReadTodo_EmptyFile_ReturnsSpecialString_NoError(t *testing.T) {
+  external.open = MockOpen
+  mockopen_error = nil
+  mockopen_ioreader = bytes.NewBufferString("")
+
+  str,err := ReadTodo("dummyOKfile.txt")
+  if str != "Nothing To Do!" {
+    t.Fatalf("Expected Special String, got %s",str)
+  }
+  if err != nil{
+    t.Fatalf("Expected Nil Error, got some error")
+  }
+}
+

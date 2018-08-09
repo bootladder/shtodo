@@ -11,7 +11,8 @@ import (
     "log"
     "fmt"
     "io"
-  //  "errors"
+    "io/ioutil"
+    //"errors"
 )
 
 type External struct {
@@ -23,6 +24,16 @@ var external = External{}
 func OpenTodo(filename string) (io.Reader,error) {
   b,err := external.open(filename)
   return b,err
+}
+func ReadTodo(filename string) (string,error) {
+
+  reader,err := OpenTodo(filename)
+  b,_ := ioutil.ReadAll(reader)
+  str := string(b)
+  if str == "" {
+    str = "Nothing To Do!"
+  }
+  return str,err
 }
 func main() {
     log.Printf("hello main go %s\n")
