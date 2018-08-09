@@ -20,31 +20,31 @@ func MockOpen(filename string) (io.Reader,error) {
   return mockopen_ioreader,mockopen_error
 }
 
-func Test_OpenTodo_NoExternalOpenDefined_ReturnsError(t *testing.T) {
+func Test_Open_NoExternalOpenDefined_ReturnsError(t *testing.T) {
   external.open = nil
-  _,err := OpenTodo("doesntmatter.txt")
+  _,err := Open("doesntmatter.txt")
   if err == nil {
     t.Fatalf("Must Fail with no dependency defined.  Did not fail")
   }
 }
 
-func Test_OpenTodo_NoSuchFile_ReturnsError(t *testing.T) {
+func Test_Open_NoSuchFile_ReturnsError(t *testing.T) {
 
   external.open = MockOpen
   mockopen_error = errors.New("NoSuchFile")
-  _,err := OpenTodo("nosuchfilename.txt")
+  _,err := Open("nosuchfilename.txt")
   if err == nil {
     t.Fatalf("Expected Error, got nil error")
   }
 }
 
-func Test_OpenTodo_FileOpenedOK_ReturnsOK(t *testing.T) {
+func Test_Open_FileOpenedOK_ReturnsOK(t *testing.T) {
 
   //Should return a byte slice and a nil error
   external.open = MockOpen
   mockopen_error = nil
   mockopen_ioreader = bytes.NewBuffer([]byte{1,2})
-  b,err := OpenTodo("dummyOKfilename.txt")
+  b,err := Open("dummyOKfilename.txt")
   if err != nil {
     t.Fatalf("Expected No Error, got some error")
   }

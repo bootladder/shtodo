@@ -13,16 +13,16 @@ import (
     "errors"
 )
 
-func OpenTodo(filename string) (io.Reader,error) {
+func Open(filename string) (io.Reader,error) {
   if external.open == nil {
-    return nil,errors.New("OpenTodo must have external.open() defined")
+    return nil,errors.New("Open must have external.open() defined")
   }
   b,err := external.open(filename)
   return b,err
 }
 func ReadTodo(filename string) (string,error) {
 
-  reader,err := OpenTodo(filename)
+  reader,err := Open(filename)
   if err != nil {
     return "fail", err
   }
