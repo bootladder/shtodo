@@ -11,32 +11,33 @@ import (
     "log"
     "fmt"
     "io"
-    "io/ioutil"
-    //"errors"
+    "os"
 )
 
 type External struct {
   open func(string) (io.Reader,error)
 }
 
+func osopen_wrapper(s string) (io.Reader,error) {
+
+  return os.Open(s)
+}
+
 var external = External{}
 
-func OpenTodo(filename string) (io.Reader,error) {
-  b,err := external.open(filename)
-  return b,err
+func inject() {
+    external.open = osopen_wrapper
 }
-func ReadTodo(filename string) (string,error) {
 
-  reader,err := OpenTodo(filename)
-  b,_ := ioutil.ReadAll(reader)
-  str := string(b)
-  if str == "" {
-    str = "Nothing To Do!"
-  }
-  return str,err
-}
 func main() {
+    inject()
     log.Printf("hello main go %s\n")
     fmt.Printf("hello main go %s\n")
+    var str,err = ReadTodo("/tmp/blah.txt")
+    if err != nil {
+      fmt.Printf("Error:  ReadTodo: %v\n",err)
+      return
+    }
+    fmt.Printf("Todo:  %s\n",str)
     //myshtodo.Run()
 }

@@ -20,6 +20,14 @@ func MockOpen(filename string) (io.Reader,error) {
   return mockopen_ioreader,mockopen_error
 }
 
+func Test_OpenTodo_NoExternalOpenDefined_ReturnsError(t *testing.T) {
+  external.open = nil
+  _,err := OpenTodo("doesntmatter.txt")
+  if err == nil {
+    t.Fatalf("Must Fail with no dependency defined.  Did not fail")
+  }
+}
+
 func Test_OpenTodo_NoSuchFile_ReturnsError(t *testing.T) {
 
   external.open = MockOpen
@@ -42,6 +50,17 @@ func Test_OpenTodo_FileOpenedOK_ReturnsOK(t *testing.T) {
   }
   if b == nil {
     t.Fatalf("Expected Byte Slice, got nil")
+  }
+}
+
+func Test_ReadTodo_NoExternalOpenDefined_ReturnsError(t *testing.T) {
+  external.open = nil
+  mockopen_error = nil
+  mockopen_ioreader = nil
+
+  _,err := ReadTodo("dummyfilenotexists.txt")
+  if err == nil {
+    t.Fatalf("Expected Error, got nil")
   }
 }
 
