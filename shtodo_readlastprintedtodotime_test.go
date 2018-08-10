@@ -6,8 +6,8 @@ import (
 //  "io"
   "errors"
   "bytes"
-  "time"
-  "encoding/binary"
+//  "time"
+//  "encoding/binary"
 )
 
 var layout = "01/02/2006 3:04:05 PM"
@@ -20,7 +20,7 @@ func init() {
 func Test_ReadLastPrintedTodoTime_ErrorOpening_ReturnsError(t *testing.T) {
   external.open = MockOpen
   mockopen_error = errors.New("error opening file")
-  mockopen_ioreader = bytes.NewBuffer([]byte{1,2})
+  mockopen_ioreader = bytes.NewBufferString("contents don't matter")
 
   _,err := ReadLastPrintedTodoTime("dummyfilenotexists.txt")
   if err == nil {
@@ -30,13 +30,8 @@ func Test_ReadLastPrintedTodoTime_ErrorOpening_ReturnsError(t *testing.T) {
 
 func Test_ReadLastPrintedTodoTime_InvalidFormat_ReturnsError(t *testing.T) {
   external.open = MockOpen
-  mockopen_error = errors.New("error opening file")
-  t1, _ := time.Parse(layout, "02/28/2016 9:31:46 PM")
-  t_unix := t1.Unix()
-  t_bytes := make([]byte,8)
-  binary.PutVarint(t_bytes,t_unix)
-
-  mockopen_ioreader = bytes.NewBuffer(t_bytes)
+  mockopen_error = nil
+  mockopen_ioreader = bytes.NewBufferString("300/28-20160 z:31:46 PM")
 
   _,err := ReadLastPrintedTodoTime("dummyfilenotexists.txt")
   if err == nil {
@@ -47,12 +42,7 @@ func Test_ReadLastPrintedTodoTime_InvalidFormat_ReturnsError(t *testing.T) {
 func Test_ReadLastPrintedTodoTime_ValidFormat_ReturnsNilError(t *testing.T) {
   external.open = MockOpen
   mockopen_error = nil
-  t1, _ := time.Parse(layout, "02/28/2016 9:31:46 PM")
-  t_unix := t1.Unix()
-  t_bytes := make([]byte,8)
-  binary.PutVarint(t_bytes,t_unix)
-
-  mockopen_ioreader = bytes.NewBuffer(t_bytes)
+  mockopen_ioreader = bytes.NewBufferString("02/28/2016 9:31:46 PM")
 
   _,err := ReadLastPrintedTodoTime("dummyfilenotexists.txt")
   if err != nil {

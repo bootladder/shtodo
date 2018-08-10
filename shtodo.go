@@ -12,8 +12,8 @@ import (
     "io/ioutil"
     "errors"
     "time"
-    "fmt"
-    "strconv"
+//    "fmt"
+//    "strconv"
 )
 
 func Open(filename string) (io.Reader,error) {
@@ -48,11 +48,7 @@ func ReadLastPrintedTodoTime(filename string) (time.Time,error) {
   if str == "" {
   }
 
-  i, err := strconv.ParseInt(str, 10, 64)
-  if err != nil {
-      return time.Time{},err
-  }
-  tm := time.Unix(i, 0)
-  fmt.Println(tm)
-  return tm,nil
+  //Convert the string to a time.Time
+  tnow, err := time.Parse(layout, str)
+  return tnow,err
 }
