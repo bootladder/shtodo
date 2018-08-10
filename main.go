@@ -8,10 +8,10 @@ package main
 // Call myshtodo.Run()
 
 import (
-    "log"
     "fmt"
     "io"
     "os"
+    "time"
 )
 
 var external = External{}
@@ -29,13 +29,20 @@ func inject() {
 
 func main() {
     inject()
-    log.Printf("hello main go %s\n")
-    fmt.Printf("hello main go %s\n")
     var str,err = ReadTodo("/tmp/blah.txt")
     if err != nil {
       fmt.Printf("Error:  ReadTodo: %v\n",err)
       return
     }
-    fmt.Printf("Todo:  %s\n",str)
-    //myshtodo.Run()
+
+    var tnow time.Time = time.Now()
+    tbefore, err := ReadLastPrintedTodoTime("/tmp/lasttime.txt")
+    if err != nil {
+      fmt.Printf("Error:  ReadLastPrintedTodoTime: %v\n",err)
+      return
+    }
+
+    if ShouldPrint(tnow,tbefore,30) {
+      fmt.Printf("%s",str)
+    }
 }

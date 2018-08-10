@@ -10,8 +10,6 @@ import (
 //  "encoding/binary"
 )
 
-var layout = "01/02/2006 3:04:05 PM"
-
 /////////////////////////////////////
 func init() {
   fmt.Println("Test Suite Init")

@@ -12,9 +12,9 @@ import (
     "io/ioutil"
     "errors"
     "time"
-//    "fmt"
-//    "strconv"
 )
+
+var layout = "01/02/2006 3:04:05 PM"
 
 func Open(filename string) (io.Reader,error) {
   if external.open == nil {
@@ -51,4 +51,13 @@ func ReadLastPrintedTodoTime(filename string) (time.Time,error) {
   //Convert the string to a time.Time
   tnow, err := time.Parse(layout, str)
   return tnow,err
+}
+
+func ShouldPrint(tnow,tbefore time.Time, duration int) bool {
+
+  var delta float64 = tnow.Sub(tbefore).Minutes()
+  if int(delta) >= duration {
+    return true
+  }
+  return false
 }
