@@ -3,9 +3,9 @@ package main
 // Read Config File , parse out fields
 // Read Todo File
 // Get current time
-// Read file containing last printed time 
-// Populate a shtodo struct
-// Call myshtodo.Run()
+// Read file containing LastPrintedTime.txt
+// If ShouldPrint, then print
+// Write current time to LastPrintedTime.txt
 
 import (
     "fmt"
