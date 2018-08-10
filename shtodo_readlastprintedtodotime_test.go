@@ -6,7 +6,7 @@ import (
 //  "io"
   "errors"
   "bytes"
-//  "time"
+  "time"
 //  "encoding/binary"
 )
 
@@ -45,6 +45,18 @@ func Test_ReadLastPrintedTodoTime_ValidFormat_ReturnsNilError(t *testing.T) {
   _,err := ReadLastPrintedTodoTime("dummyfilenotexists.txt")
   if err != nil {
     t.Fatalf("Expected Nil Error, got some error: %v\n",err)
+  }
+}
+
+func Test_ReadLastPrintedTodoTime_EmptyFile_ReturnsLongTimeAgo(t *testing.T) {
+  external.open = MockOpen
+  mockopen_error = nil
+  mockopen_ioreader = bytes.NewBufferString("")
+
+  t1,_ := ReadLastPrintedTodoTime("dummyfilenotexists.txt")
+  ttest := time.Time{}
+  if t1 != ttest {
+    t.Fatalf("Expected Unix Time = 0, got: %v\n",t1.Unix())
   }
 }
 

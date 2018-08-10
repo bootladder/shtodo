@@ -46,6 +46,7 @@ func ReadLastPrintedTodoTime(filename string) (time.Time,error) {
   b,_ := ioutil.ReadAll(reader)
   str := string(b)
   if str == "" {
+    return time.Time{},nil
   }
 
   //Convert the string to a time.Time

@@ -34,6 +34,9 @@ func main() {
     //read config to string
     //parse config string to struct
 
+    //touch the file, ie. create it if it doesn't exist
+    os.OpenFile("/tmp/lasttime.txt", os.O_RDONLY|os.O_CREATE, 0666)
+
     var str,err = ReadTodo("/tmp/blah.txt")
     if err != nil {
       fmt.Printf("Error:  ReadTodo: %v\n",err)
