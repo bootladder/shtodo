@@ -55,7 +55,7 @@ func ReadLastPrintedTodoTime(filename string) (time.Time,error) {
 
 func ShouldPrint(tnow,tbefore time.Time, duration int) bool {
 
-  var delta float64 = tnow.Sub(tbefore).Minutes()
+  var delta float64 = tnow.Sub(tbefore).Seconds()
   if int(delta) >= duration {
     return true
   }

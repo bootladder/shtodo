@@ -12,6 +12,7 @@ import (
     "io"
     "os"
     "time"
+    "bufio"
 )
 
 var external = External{}
@@ -29,13 +30,17 @@ func inject() {
 
 func main() {
     inject()
+
+    //read config to string
+    //parse config string to struct
+
     var str,err = ReadTodo("/tmp/blah.txt")
     if err != nil {
       fmt.Printf("Error:  ReadTodo: %v\n",err)
       return
     }
 
-    var tnow time.Time = time.Now()
+    var tnow time.Time = time.Now().UTC()
     tbefore, err := ReadLastPrintedTodoTime("/tmp/lasttime.txt")
     if err != nil {
       fmt.Printf("Error:  ReadLastPrintedTodoTime: %v\n",err)
@@ -44,5 +49,14 @@ func main() {
 
     if ShouldPrint(tnow,tbefore,30) {
       fmt.Printf("%s",str)
+
+      //write current time string to file
+      str := tnow.Format(layout)
+      fileHandle, _ := os.Create("/tmp/lasttime.txt")
+      writer := bufio.NewWriter(fileHandle)
+      defer fileHandle.Close()
+
+      fmt.Fprint(writer, str)
+      writer.Flush()
     }
 }
