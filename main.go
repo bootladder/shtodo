@@ -15,6 +15,9 @@ import (
     "bufio"
 )
 
+var pathtolasttime string = "/tmp/lasttime.txt"
+var pathtotodo string = "/home/steve/Documents/todo.txt"
+
 var external = External{}
 type External struct {
   open func(string) (io.Reader,error)
@@ -35,16 +38,16 @@ func main() {
     //parse config string to struct
 
     //touch the file, ie. create it if it doesn't exist
-    os.OpenFile("/tmp/lasttime.txt", os.O_RDONLY|os.O_CREATE, 0666)
+    os.OpenFile(pathtolasttime, os.O_RDONLY|os.O_CREATE, 0666)
 
-    var str,err = ReadTodo("/tmp/blah.txt")
+    var str,err = ReadTodo(pathtotodo)
     if err != nil {
       fmt.Printf("Error:  ReadTodo: %v\n",err)
       return
     }
 
     var tnow time.Time = time.Now().UTC()
-    tbefore, err := ReadLastPrintedTodoTime("/tmp/lasttime.txt")
+    tbefore, err := ReadLastPrintedTodoTime(pathtolasttime)
     if err != nil {
       fmt.Printf("Error:  ReadLastPrintedTodoTime: %v\n",err)
       return
@@ -55,7 +58,7 @@ func main() {
 
       //write current time string to file
       str := tnow.Format(layout)
-      fileHandle, _ := os.Create("/tmp/lasttime.txt")
+      fileHandle, _ := os.Create(pathtolasttime)
       writer := bufio.NewWriter(fileHandle)
       defer fileHandle.Close()
 
