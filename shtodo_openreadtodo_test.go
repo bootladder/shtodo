@@ -2,16 +2,10 @@ package main
 
 import (
   "testing"
-  "fmt"
   "io"
   "errors"
   "bytes"
 )
-
-/////////////////////////////////////
-func init() {
-  fmt.Println("Test Suite Init")
-}
 
 var mockopen_ioreader io.Reader = nil
 var mockopen_error error = nil
@@ -21,6 +15,7 @@ func MockOpen(filename string) (io.Reader,error) {
 }
 
 func Test_Open_NoExternalOpenDefined_ReturnsError(t *testing.T) {
+
   external.open = nil
   _,err := Open("doesntmatter.txt")
   if err == nil {
