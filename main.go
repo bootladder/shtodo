@@ -32,26 +32,23 @@ func inject() {
 }
 
 func main() {
+    var  err error
     inject()
 
     //read config to string
     //parse config string to struct
 
     //touch the file, ie. create it if it doesn't exist
-    os.OpenFile(pathtolasttime, os.O_RDONLY|os.O_CREATE, 0666)
+    _,err = os.OpenFile(pathtolasttime, os.O_RDONLY|os.O_CREATE, 0666)
+    Fatal(err,"Open pathtolasttime")
 
-    var str,err = ReadTodo(pathtotodo)
-    if err != nil {
-      fmt.Printf("Error:  ReadTodo: %v\n",err)
-      return
-    }
+    var str string
+    str,err = ReadTodo(pathtotodo)
+    Fatal(err,"ReadTodo")
 
     var tnow time.Time = time.Now().UTC()
     tbefore, err := ReadLastPrintedTodoTime(pathtolasttime)
-    if err != nil {
-      fmt.Printf("Error:  ReadLastPrintedTodoTime: %v\n",err)
-      return
-    }
+    Fatal(err,"ReadLastPrintedTodoTime")
 
     if ShouldPrint(tnow,tbefore,30) {
       fmt.Printf("%s",str)
