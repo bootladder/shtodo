@@ -42,8 +42,8 @@ func main() {
     _,err = os.OpenFile(pathtolasttime, os.O_RDONLY|os.O_CREATE, 0666)
     Fatal(err,"Open pathtolasttime")
 
-    var str string
-    str,err = ReadTodo(pathtotodo)
+    var todoContents string
+    todoContents,err = ReadTodo(pathtotodo)
     Fatal(err,"ReadTodo")
 
     var tnow time.Time = time.Now().UTC()
@@ -51,15 +51,15 @@ func main() {
     Fatal(err,"ReadLastPrintedTodoTime")
 
     if ShouldPrint(tnow,tbefore,30) {
-      fmt.Printf("%s",str)
+      fmt.Printf("%s",todoContents)
 
       //write current time string to file
-      str := tnow.Format(layout)
+      currentTimeString := tnow.Format(layout)
       fileHandle, _ := os.Create(pathtolasttime)
       writer := bufio.NewWriter(fileHandle)
       defer fileHandle.Close()
 
-      fmt.Fprint(writer, str)
+      fmt.Fprint(writer, currentTimeString)
       writer.Flush()
     }
 }
