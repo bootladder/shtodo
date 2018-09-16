@@ -38,13 +38,9 @@ func main() {
     //read config to string
     //parse config string to struct
 
-    //touch the file, ie. create it if it doesn't exist
-    _,err = os.OpenFile(pathtolasttime, os.O_RDONLY|os.O_CREATE, 0666)
-    Fatal(err,"Open pathtolasttime")
+    TouchLastTimeFile()
 
-    var todoContents string
-    todoContents,err = ReadTodo(pathtotodo)
-    Fatal(err,"ReadTodo")
+    var todoContents string = ReadTodo(pathtotodo)
 
     var tnow time.Time = time.Now().UTC()
     tbefore, err := ReadLastPrintedTodoTime(pathtolasttime)
@@ -64,4 +60,9 @@ func UpdateLastTimeFile(tnow time.Time) {
     writer := bufio.NewWriter(fileHandle)
     fmt.Fprint(writer, currentTimeString)
     writer.Flush()
+}
+
+func TouchLastTimeFile() {
+    var _,err = os.OpenFile(pathtolasttime, os.O_RDONLY|os.O_CREATE, 0666)
+    Fatal(err,"Open pathtolasttime")
 }

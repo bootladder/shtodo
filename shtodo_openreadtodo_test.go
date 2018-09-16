@@ -2,6 +2,7 @@ package main
 
 import (
   "testing"
+  "github.com/stretchr/testify/assert"
   "io"
   "errors"
   "bytes"
@@ -53,10 +54,7 @@ func Test_ReadTodo_NoExternalOpenDefined_ReturnsError(t *testing.T) {
   mockopen_error = nil
   mockopen_ioreader = nil
 
-  _,err := ReadTodo("dummyfilenotexists.txt")
-  if err == nil {
-    t.Fatalf("Expected Error, got nil")
-  }
+  assert.Panics(t, func(){ ReadTodo("dummy.txt") })
 }
 
 func Test_ReadTodo_ErrorOpening_ReturnsError(t *testing.T) {
@@ -64,10 +62,7 @@ func Test_ReadTodo_ErrorOpening_ReturnsError(t *testing.T) {
   mockopen_error = errors.New("error opening file")
   mockopen_ioreader = bytes.NewBuffer([]byte{1,2})
 
-  _,err := ReadTodo("dummyfilenotexists.txt")
-  if err == nil {
-    t.Fatalf("Expected Error, got nil")
-  }
+  assert.Panics(t, func(){ ReadTodo("dummy.txt") })
 }
 
 func Test_ReadTodo_EmptyFile_ReturnsSpecialString_NoError(t *testing.T) {
@@ -75,12 +70,13 @@ func Test_ReadTodo_EmptyFile_ReturnsSpecialString_NoError(t *testing.T) {
   mockopen_error = nil
   mockopen_ioreader = bytes.NewBufferString("")
 
-  str,err := ReadTodo("dummyOKfile.txt")
+  var str string
+  assert.NotPanics(t, func(){
+      str = ReadTodo("dummy.txt")
+  })
+
   if str != "Nothing To Do!" {
     t.Fatalf("Expected Special String, got %s",str)
-  }
-  if err != nil{
-    t.Fatalf("Expected Nil Error, got some error")
   }
 }
 
