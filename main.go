@@ -53,13 +53,15 @@ func main() {
     if ShouldPrint(tnow,tbefore,30) {
       fmt.Printf("%s",todoContents)
 
-      //write current time string to file
-      currentTimeString := tnow.Format(layout)
-      fileHandle, _ := os.Create(pathtolasttime)
-      writer := bufio.NewWriter(fileHandle)
-      defer fileHandle.Close()
-
-      fmt.Fprint(writer, currentTimeString)
-      writer.Flush()
+      UpdateLastTimeFile(tnow)
     }
+}
+
+func UpdateLastTimeFile(tnow time.Time) {
+    currentTimeString := tnow.Format(layout)
+    fileHandle, _ := os.Create(pathtolasttime)
+    defer fileHandle.Close()
+    writer := bufio.NewWriter(fileHandle)
+    fmt.Fprint(writer, currentTimeString)
+    writer.Flush()
 }
