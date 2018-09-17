@@ -32,23 +32,21 @@ func inject() {
 }
 
 func main() {
-    var  err error
+
     inject()
 
     //read config to string
     //parse config string to struct
 
-    TouchLastTimeFile()
-
     var todoContents string = ReadTodo(pathtotodo)
 
+    TouchLastTimeFile()
+    var tbefore time.Time = ReadLastPrintedTodoTime(pathtolasttime)
+
     var tnow time.Time = time.Now().UTC()
-    tbefore, err := ReadLastPrintedTodoTime(pathtolasttime)
-    Fatal(err,"ReadLastPrintedTodoTime")
 
     if ShouldPrint(tnow,tbefore,30) {
-      fmt.Printf("%s",todoContents)
-
+      fmt.Print(todoContents)
       UpdateLastTimeFile(tnow)
     }
 }
@@ -63,6 +61,7 @@ func UpdateLastTimeFile(tnow time.Time) {
 }
 
 func TouchLastTimeFile() {
-    var _,err = os.OpenFile(pathtolasttime, os.O_RDONLY|os.O_CREATE, 0666)
+    var f, err = os.OpenFile(pathtolasttime, os.O_RDONLY|os.O_CREATE, 0666)
     Fatal(err,"Open pathtolasttime")
+    f.Close()
 }

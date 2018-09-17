@@ -36,21 +36,21 @@ func ReadTodo(filename string) (string) {
   return str
 }
 
-func ReadLastPrintedTodoTime(filename string) (time.Time,error) {
+func ReadLastPrintedTodoTime(filename string) (time.Time) {
 
   reader,err := Open(filename)
-  if err != nil {
-    return time.Time{}, err
-  }
+  Fatal(err, "ReadLastPrintedTodoTime: Open")
+
   b,_ := ioutil.ReadAll(reader)
   str := string(b)
   if str == "" {
-    return time.Time{},nil
+    return time.Time{}
   }
 
   //Convert the string to a time.Time
   tnow, err := time.Parse(layout, str)
-  return tnow,err
+  Fatal(err, "ReadLastPrintedTodoTime: time.Parse")
+  return tnow
 }
 
 func ShouldPrint(tnow,tbefore time.Time, duration int) bool {
