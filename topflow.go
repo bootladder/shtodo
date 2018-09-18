@@ -5,6 +5,13 @@ import (
     "time"
 )
 
+// Read Config File , parse out fields
+// Read Todo File
+// Get current time
+// Read file containing last printed time 
+// Populate a shtodo struct
+// Call myshtodo.Run()
+
 func topflow() {
     //read config to string
     //parse config string to struct
