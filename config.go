@@ -21,6 +21,6 @@ func (c * Config) ParseString(input string) {
     }
 }
 
-func GetPathToTodo() string {
+func (c * Config) GetPathToTodo() string {
     return viper.GetString("todo.path")
 }

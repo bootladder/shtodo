@@ -52,7 +52,7 @@ path = "/home/hello/todo.txt"
 
     myConfig.ParseString(myInput)
 
-    var str string = GetPathToTodo()
+    var str string = myConfig.GetPathToTodo()
     if str != "/home/hello/todo.txt" {
         t.Fatalf("Did not get the correct path from the config file, got %s",str)
     }
