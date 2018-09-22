@@ -10,6 +10,13 @@ type Config struct {
 
 }
 
+func (c * Config) ParseConfigFile(filename string) {
+
+    var _, err = external.readfile(filename)
+    Fatal(err)
+    //Fatal(errors.New("hello"))
+}
+
 func (c * Config) ParseString(input string) {
 
     viper.SetConfigType("toml")

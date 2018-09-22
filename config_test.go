@@ -3,7 +3,30 @@ package main
 import (
   "testing"
   "github.com/stretchr/testify/assert"
+  "errors"
 )
+
+func Test_ParseConfigFile_FailToRead_Panics(t *testing.T) {
+
+    external.readfile = MockReadFile
+    mockreadfile_error = errors.New("FailToRead")
+    var myConfig = &Config{}
+    assert.Panics(t, func() {
+        myConfig.ParseConfigFile("dummyfile.txt")
+    }, "Should panic on Fail To Read Config File but did not panic")
+}
+
+func Test_ParseConfigFile_ConfigFileOK_DoesNotPanic(t *testing.T) {
+
+    external.readfile = MockReadFile
+    mockreadfile_error = nil
+    mockreadfile_bytes = []byte("hello")
+
+    var myConfig = &Config{}
+    assert.NotPanics(t, func() {
+        myConfig.ParseConfigFile("dummyfile.txt")
+    }, "Should not panic on OK config file, but did panic")
+}
 
 func Test_ParseConfigString_Empty_Panics(t *testing.T) {
     var myConfig = &Config{}

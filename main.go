@@ -21,6 +21,7 @@ var pathtotodo string = "/home/steve/Documents/todo.txt"
 var external = External{}
 type External struct {
   open func(string) (io.Reader,error)
+  readfile func(string) ([]byte,error)
 }
 
 func osopen_wrapper(s string) (io.Reader,error) {

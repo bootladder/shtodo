@@ -3,17 +3,9 @@ package main
 import (
   "testing"
   "github.com/stretchr/testify/assert"
-  "io"
   "errors"
   "bytes"
 )
-
-var mockopen_ioreader io.Reader = nil
-var mockopen_error error = nil
-
-func MockOpen(filename string) (io.Reader,error) {
-  return mockopen_ioreader,mockopen_error
-}
 
 func Test_Open_NoExternalOpenDefined_ReturnsError(t *testing.T) {
 
