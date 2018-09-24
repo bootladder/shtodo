@@ -18,9 +18,15 @@ func Test_ParseConfigFile_FailToRead_Panics(t *testing.T) {
 
 func Test_ParseConfigFile_ConfigFileOK_DoesNotPanic(t *testing.T) {
 
+    var myInput string =
+`
+# A sample TOML config file.
+[development]
+enabled = true
+`
     external.readfile = MockReadFile
     mockreadfile_error = nil
-    mockreadfile_bytes = []byte("hello")
+    mockreadfile_bytes = []byte(myInput)
 
     var myConfig = &Config{}
     assert.NotPanics(t, func() {
@@ -35,31 +41,21 @@ func Test_ParseConfigString_Empty_Panics(t *testing.T) {
     }, "Should panic on empty input but did not panic")
 }
 
-func Test_ParseConfigString_ValidField_DoesNotPanic(t *testing.T) {
+func Test_ParseConfigFile_InvalidTOML_Panics(t *testing.T) {
 
-    var myConfig = &Config{}
-    var myInput string =
-`
-# A sample TOML config file.
-[development]
-enabled = true
-`
-    assert.NotPanics(t, func() {
-        myConfig.ParseString(myInput)
-    }, "Should not panic on Valid Field but did panic")
-}
-
-func Test_ParseConfigString_InvalidTOML_Panics(t *testing.T) {
-
-    var myConfig = &Config{}
     var myInput string =
 `
 z A sample TOML config file.
 \development]
 port = # 8080
 `
+    external.readfile = MockReadFile
+    mockreadfile_error = nil
+    mockreadfile_bytes = []byte(myInput)
+
+    var myConfig = &Config{}
     assert.Panics(t, func() {
-        myConfig.ParseString(myInput)
+        myConfig.ParseConfigFile("blah")
     }, "Should panic on Invalid TOML but did not panic")
 }
 
