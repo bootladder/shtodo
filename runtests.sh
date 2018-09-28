@@ -1,6 +1,8 @@
+echo running.... go test
 go test
-./bats/bin/bats tests/*
-echo go build
+echo running.... go build.....
 go build
-echo rm shtodo
+echo running.... bats test/* ....
+./bats/bin/bats tests/*
+echo running.... rm shtodo....
 rm shtodo

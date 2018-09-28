@@ -16,7 +16,7 @@ import (
 )
 
 var pathtolasttime string = "/tmp/lasttime.txt"
-var pathtotodo string = "/home/steve/Documents/todo.txt"
+var pathtotodo string = "/home/steve/Documents/todo/todo.txt"
 
 var external = External{}
 type External struct {
