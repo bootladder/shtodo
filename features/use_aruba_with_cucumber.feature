@@ -4,7 +4,7 @@ Feature: Cucumber
     """
     Hello, Aruba!
     """
-    When I run `aruba-test-cli file.txt` 
+    When I run `cat file.txt` 
     Then the file "file.txt" should contain:
     """
     Hello, Aruba!
