@@ -23,6 +23,14 @@ func Open(filename string) (io.Reader,error) {
   b,err := external.open(filename)
   return b,err
 }
+func ReadFile(filename string) ([]byte,error) {
+  if external.readfile == nil {
+    return nil,errors.New("ReadFile must have external.readfile() defined")
+  }
+  b,err := external.readfile(filename)
+  return b,err
+}
+
 func ReadTodo(filename string) (string) {
 
   reader,err := Open(filename)

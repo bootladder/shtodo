@@ -10,6 +10,7 @@ package main
 import (
     "fmt"
     "io"
+    "io/ioutil"
     "os"
     "time"
     "bufio"
@@ -27,9 +28,13 @@ type External struct {
 func osopen_wrapper(s string) (io.Reader,error) {
   return os.Open(s)
 }
+func readfile_wrapper(s string) ([]byte,error) {
+  return ioutil.ReadFile(s)
+}
 
 func inject() {
     external.open = osopen_wrapper
+    external.readfile = readfile_wrapper
 }
 
 func main() {

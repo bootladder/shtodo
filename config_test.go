@@ -6,6 +6,15 @@ import (
   "errors"
 )
 
+func Test_ParseConfigFile_NoReadFileDefined_ReturnsError(t *testing.T) {
+
+  external.readfile = nil
+  _,err := ReadFile("doesntmatter.txt")
+  if err == nil {
+    t.Fatalf("Must Fail with no dependency defined.  Did not fail")
+  }
+}
+
 func Test_ParseConfigFile_FailToRead_Panics(t *testing.T) {
 
     external.readfile = MockReadFile

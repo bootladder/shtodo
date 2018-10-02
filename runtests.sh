@@ -7,7 +7,7 @@ go test
 echo ========= ACCEPTANCE TESTS ================
 echo running.... go build.....
 go build
-docker run -t --rm --volume=$(pwd):/tmp hello /tmp/bats/bin/bats /tmp/tests/test_shtodo.bats
+docker run -t --rm --volume=$(pwd):/opt hello /opt/bats/bin/bats /opt/tests/test_shtodo.bats
 #docker run -t --rm --volume=$(pwd):/tmp hello /bin/bash -c "cd /tmp && bundle exec cucumber"
-#docker run -t --rm --volume=$(pwd):/tmp hello echo hello
+#docker run -t --rm --volume=$(pwd):/opt hello ls -al /tmp/
 rm shtodo

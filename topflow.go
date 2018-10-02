@@ -14,9 +14,16 @@ import (
 
 func topflow() {
     //read config to string
+
+    var myConfig = &Config{}
+    var err = myConfig.ParseConfigFile("/etc/shtodo.conf")
+    if err != nil {
+        Fatal(err)
+    }
+    var path = myConfig.GetPathToTodo()
     //parse config string to struct
 
-    var todoContents string = ReadTodo(pathtotodo)
+    var todoContents string = ReadTodo(path)
 
     TouchLastTimeFile()
     var tbefore time.Time = ReadLastPrintedTodoTime(pathtolasttime)
