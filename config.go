@@ -10,24 +10,31 @@ type Config struct {
 
 }
 
-func (c * Config) ParseConfigFile(filename string) {
+func (c * Config) ParseConfigFile(filename string) error {
 
     var b, err = external.readfile(filename)
-    Fatal(err)
-    c.ParseString(string(b))
+    if err != nil {
+        return err
+    }
+
+    err = c.ParseString(string(b))
+    return err
 }
 
-func (c * Config) ParseString(input string) {
+func (c * Config) ParseString(input string) error {
 
-    viper.SetConfigType("toml")
+    viper.SetConfigType("yaml")
     var err = viper.ReadConfig(bytes.NewBufferString(input))
-    Fatal(err)
+    if err != nil {
+      return err
+    }
 
     if input == "" {
-      Fatal(errors.New("hello"),"hello")
+      return errors.New("hello")
     }
+    return nil
 }
 
 func (c * Config) GetPathToTodo() string {
-    return viper.GetString("todo.path")
+    return viper.GetString("todopath")
 }

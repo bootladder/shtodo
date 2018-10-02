@@ -5,6 +5,7 @@ import (
 )
 
 func Test_Hello(t * testing.T) {
+    topflow()
     //t.Fatalf("Hello")
 }
 
