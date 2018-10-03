@@ -51,17 +51,3 @@ func Test_ReadLastPrintedTodoTime_EmptyFile_ReturnsLongTimeAgo(t *testing.T) {
     t.Fatalf("Expected Unix Time = 0, got: %v\n",t1.Unix())
   }
 }
-
-func usingMockReadFile_Success(myBytes []byte) {
-
-  external.readfile = MockReadFile
-  mockreadfile_error = nil
-  mockreadfile_bytes = myBytes
-}
-
-func usingMockReadFile_Fail(err error) {
-
-  external.readfile = MockReadFile
-  mockreadfile_error = err
-  mockreadfile_bytes = []byte("doesn't matter")
-}
