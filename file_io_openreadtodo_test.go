@@ -41,8 +41,8 @@ func Test_Open_FileOpenedOK_ReturnsOK(t *testing.T) {
   }
 }
 
-func Test_ReadTodo_NoExternalOpenDefined_ReturnsError(t *testing.T) {
-  external.open = nil
+func Test_ReadTodo_NoExternalReadFileDefined_Panics(t *testing.T) {
+  external.readfile = nil
   mockopen_error = nil
   mockopen_ioreader = nil
 
@@ -59,9 +59,9 @@ func Test_ReadTodo_ErrorOpening_ReturnsError(t *testing.T) {
 }
 
 func Test_ReadTodo_EmptyFile_ReturnsSpecialString_NoPanic(t *testing.T) {
-  external.open = MockOpen
-  mockopen_error = nil
-  mockopen_ioreader = bytes.NewBufferString("")
+  external.readfile = MockReadFile
+  mockreadfile_error = nil
+  mockreadfile_bytes = []byte("")
 
   var str string
   assert.NotPanics(t, func(){

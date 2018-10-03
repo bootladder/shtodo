@@ -32,11 +32,9 @@ func ReadFile(filename string) ([]byte,error) {
 
 func ReadTodo(filename string) (string) {
 
-  reader,err := Open(filename)
+  reader,err := ReadFile(filename)
   Fatal(err, "ReadTodo: Open")
-
-  b,_ := ioutil.ReadAll(reader)
-  str := string(b)
+  str := string(reader)
   if str == "" {
     str = "Nothing To Do!"
   }
