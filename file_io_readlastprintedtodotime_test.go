@@ -14,9 +14,8 @@ func init() {
 }
 
 func Test_ReadLastPrintedTodoTime_ErrorOpening_ReturnsError(t *testing.T) {
-  external.readfile = MockReadFile
-  mockreadfile_error = errors.New("error opening file")
-  mockreadfile_bytes = []byte("contents don't matter")
+
+  usingMockReadFile_Fail(errors.New("error opening file"))
 
   assert.Panics(t, func(){
       ReadLastPrintedTodoTime("dummyfilenotexists.txt")
@@ -24,9 +23,8 @@ func Test_ReadLastPrintedTodoTime_ErrorOpening_ReturnsError(t *testing.T) {
 }
 
 func Test_ReadLastPrintedTodoTime_InvalidFormat_ReturnsError(t *testing.T) {
-  external.readfile = MockReadFile
-  mockreadfile_error = nil
-  mockreadfile_bytes = []byte("300/28-20160 z:31:46 PM")
+
+  usingMockReadFile_Success([]byte("300/28-20160 z:31:46 PM"))
 
   assert.Panics(t, func(){
       ReadLastPrintedTodoTime("dummyfilenotexists.txt")
@@ -59,4 +57,11 @@ func usingMockReadFile_Success(myBytes []byte) {
   external.readfile = MockReadFile
   mockreadfile_error = nil
   mockreadfile_bytes = myBytes
+}
+
+func usingMockReadFile_Fail(err error) {
+
+  external.readfile = MockReadFile
+  mockreadfile_error = err
+  mockreadfile_bytes = []byte("doesn't matter")
 }
