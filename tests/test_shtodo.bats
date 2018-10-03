@@ -2,10 +2,10 @@
   echo blah > /tmp/todo.txt
   cp /opt/tests/test_shtodo.conf /etc/shtodo.conf
   run /opt/shtodo
+  echo "status = ${status}"
+  echo "output = ${output}"
   [ "$output" = "blah" ]
 }
 
 
   #echo "/opt/todo.txt =" $(cat /opt/todo.txt)
-  #echo "status = ${status}"
-  #echo "output = ${output}"
