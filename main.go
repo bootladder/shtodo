@@ -8,7 +8,7 @@ import (
 
 var external = External{}
 type External struct {
-  readfile func(string) ([]byte,error)
+    readfile func(string) ([]byte,error)
 }
 
 func inject() {
@@ -22,6 +22,8 @@ func main() {
 }
 
 func topflow() {
+
+    // Read Command Line Flags
 
     var myConfig = &Config{}
     var err = myConfig.ParseConfigFile("/etc/shtodo.conf")

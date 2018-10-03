@@ -49,6 +49,9 @@ func ReadLastPrintedTodoTime(filename string) (time.Time) {
 }
 
 
+/*
+  Not Tested
+*/
 func UpdateLastTimeFile(tnow time.Time) {
     currentTimeString := tnow.Format(layout)
     fileHandle, _ := os.Create(pathtolasttime)
