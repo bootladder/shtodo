@@ -1,7 +1,6 @@
 package main
 
 import (
-    "io"
     "os"
     "errors"
     "time"
@@ -14,13 +13,6 @@ var pathtolasttime string = "/tmp/lasttime.txt"
 //format used in storing last printed time to a file
 var layout = "01/02/2006 3:04:05 PM"
 
-func Open(filename string) (io.Reader,error) {
-  if external.open == nil {
-    return nil,errors.New("Open must have external.open() defined")
-  }
-  b,err := external.open(filename)
-  return b,err
-}
 func ReadFile(filename string) ([]byte,error) {
   if external.readfile == nil {
     return nil,errors.New("ReadFile must have external.readfile() defined")
