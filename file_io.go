@@ -2,7 +2,6 @@ package main
 
 import (
     "io"
-    "io/ioutil"
     "os"
     "errors"
     "time"
@@ -33,7 +32,7 @@ func ReadFile(filename string) ([]byte,error) {
 func ReadTodo(filename string) (string) {
 
   reader,err := ReadFile(filename)
-  Fatal(err, "ReadTodo: Open")
+  Fatal(err, "ReadTodo: ReadFile")
   str := string(reader)
   if str == "" {
     str = "Nothing To Do!"
@@ -43,11 +42,10 @@ func ReadTodo(filename string) (string) {
 
 func ReadLastPrintedTodoTime(filename string) (time.Time) {
 
-  reader,err := Open(filename)
-  Fatal(err, "ReadLastPrintedTodoTime: Open")
+  reader,err := ReadFile(filename)
+  Fatal(err, "ReadLastPrintedTodoTime: ReadFile")
 
-  b,_ := ioutil.ReadAll(reader)
-  str := string(b)
+  str := string(reader)
   if str == "" {
     return time.Time{}
   }

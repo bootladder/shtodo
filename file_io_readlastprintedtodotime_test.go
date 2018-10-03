@@ -4,11 +4,8 @@ import (
   "testing"
   "github.com/stretchr/testify/assert"
   "fmt"
-//  "io"
   "errors"
-  "bytes"
   "time"
-//  "encoding/binary"
 )
 
 /////////////////////////////////////
@@ -17,19 +14,19 @@ func init() {
 }
 
 func Test_ReadLastPrintedTodoTime_ErrorOpening_ReturnsError(t *testing.T) {
-  external.open = MockOpen
-  mockopen_error = errors.New("error opening file")
-  mockopen_ioreader = bytes.NewBufferString("contents don't matter")
+  external.readfile = MockReadFile
+  mockreadfile_error = errors.New("error opening file")
+  mockreadfile_bytes = []byte("contents don't matter")
 
   assert.Panics(t, func(){
       ReadLastPrintedTodoTime("dummyfilenotexists.txt")
-  }, "MockOpen set to fail, but ReadTodo did not panic")
+  }, "MockReadFile set to fail, but ReadLastPrintedTodoTime did not panic")
 }
 
 func Test_ReadLastPrintedTodoTime_InvalidFormat_ReturnsError(t *testing.T) {
-  external.open = MockOpen
-  mockopen_error = nil
-  mockopen_ioreader = bytes.NewBufferString("300/28-20160 z:31:46 PM")
+  external.readfile = MockReadFile
+  mockreadfile_error = nil
+  mockreadfile_bytes = []byte("300/28-20160 z:31:46 PM")
 
   assert.Panics(t, func(){
       ReadLastPrintedTodoTime("dummyfilenotexists.txt")
@@ -37,19 +34,17 @@ func Test_ReadLastPrintedTodoTime_InvalidFormat_ReturnsError(t *testing.T) {
 }
 
 func Test_ReadLastPrintedTodoTime_ValidFormat_DoesNotPanic(t *testing.T) {
-  external.open = MockOpen
-  mockopen_error = nil
-  mockopen_ioreader = bytes.NewBufferString("02/28/2016 9:31:46 PM")
+
+  usingMockReadFile_Success([]byte("02/28/2016 9:31:46 PM"))
 
   assert.NotPanics(t, func(){
       ReadLastPrintedTodoTime("dummyfilenotexists.txt")
-  }, "Invalid format in time string, but did not panic")
+  }, "Should Not Panic on valid time but did panic")
 }
 
 func Test_ReadLastPrintedTodoTime_EmptyFile_ReturnsLongTimeAgo(t *testing.T) {
-  external.open = MockOpen
-  mockopen_error = nil
-  mockopen_ioreader = bytes.NewBufferString("")
+
+  usingMockReadFile_Success([]byte(""))
 
   var t1 = ReadLastPrintedTodoTime("dummyfilenotexists.txt")
   ttest := time.Time{}
@@ -59,3 +54,9 @@ func Test_ReadLastPrintedTodoTime_EmptyFile_ReturnsLongTimeAgo(t *testing.T) {
   }
 }
 
+func usingMockReadFile_Success(myBytes []byte) {
+
+  external.readfile = MockReadFile
+  mockreadfile_error = nil
+  mockreadfile_bytes = myBytes
+}
