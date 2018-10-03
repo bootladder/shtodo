@@ -6,7 +6,6 @@ import (
 )
 
 func topflow() {
-    //read config to string
 
     var myConfig = &Config{}
     var err = myConfig.ParseConfigFile("/etc/shtodo.conf")
