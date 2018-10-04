@@ -42,6 +42,8 @@ func topflow() {
             pushtodo()
         case "pull":
             pulltodo()
+        case "edit":
+            edittodo()
     }
 }
 
@@ -68,4 +70,7 @@ func pushtodo() {
 
 func pulltodo() {
     fmt.Print("yay push")
+}
+func edittodo() {
+    fmt.Print("yay edit")
 }
