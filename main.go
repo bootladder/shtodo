@@ -30,6 +30,7 @@ func topflow() {
 
     switch(command) {
         case "print":
+            pulltodo()
             printtodo()
         case "push":
             pushtodo()
@@ -37,6 +38,7 @@ func topflow() {
             pulltodo()
         case "edit", "e":
             edittodo()
+            pushtodo()
     }
 }
 
@@ -59,7 +61,7 @@ func printtodo() {
 
 func pushtodo() {
     todo_dir := filepath.Dir(myConfig.GetPathToTodo())
-    command := "cd " + todo_dir + ";git commit -am \"hello $(date)\"; " + "git push"
+    command := "cd " + todo_dir + ";git commit -am \"hello $(date)\"; " + "git push\n"
     fmt.Print(command)
     bash_command(command)
 }
