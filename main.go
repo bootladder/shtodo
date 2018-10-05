@@ -11,15 +11,6 @@ import (
 var command string = "print"
 var myConfig = &Config{}
 
-var external = External{}
-type External struct {
-    readfile func(string) ([]byte,error)
-}
-
-func inject() {
-    external.readfile = ioutil.ReadFile
-}
-
 func main() {
 
     inject()
@@ -78,3 +69,15 @@ func edittodo() {
     cmd.Stdout = os.Stdout
     _ = cmd.Run()
 }
+
+////////////////////////////////////////////////////////
+
+var external = External{}
+type External struct {
+    readfile func(string) ([]byte,error)
+}
+
+func inject() {
+    external.readfile = ioutil.ReadFile
+}
+
