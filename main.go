@@ -5,6 +5,7 @@ import (
     "fmt"
     "time"
     "os"
+    "os/exec"
 )
 
 var command string = "print"
@@ -42,7 +43,7 @@ func topflow() {
             pushtodo()
         case "pull":
             pulltodo()
-        case "edit":
+        case "edit", "e":
             edittodo()
     }
 }
@@ -72,5 +73,8 @@ func pulltodo() {
     fmt.Print("yay push")
 }
 func edittodo() {
-    fmt.Print("yay edit")
+    cmd := exec.Command("vim", myConfig.GetPathToTodo())
+    cmd.Stdin = os.Stdin
+    cmd.Stdout = os.Stdout
+    _ = cmd.Run()
 }
