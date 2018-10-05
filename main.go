@@ -6,6 +6,7 @@ import (
     "time"
     "os"
     "os/exec"
+    "path/filepath"
 )
 
 var command string = "print"
@@ -57,16 +58,27 @@ func printtodo() {
 }
 
 func pushtodo() {
-    fmt.Print("yay push")
+    todo_dir := filepath.Dir(myConfig.GetPathToTodo())
+    command := "cd " + todo_dir + ";git commit -am \"hello $(date)\"; " + "git push"
+    fmt.Print(command)
+    bash_command(command)
 }
 
 func pulltodo() {
-    fmt.Print("yay push")
+    todo_dir := filepath.Dir(myConfig.GetPathToTodo())
+    command := "cd " + todo_dir + ";git pull"
+    bash_command(command)
 }
 func edittodo() {
-    cmd := exec.Command("vim", myConfig.GetPathToTodo())
+    command := "vi " + myConfig.GetPathToTodo()
+    bash_command(command)
+}
+
+func bash_command(command string) {
+    cmd := exec.Command("bash", "-c", command)
     cmd.Stdin = os.Stdin
     cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
     _ = cmd.Run()
 }
 
