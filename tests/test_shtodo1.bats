@@ -3,6 +3,8 @@
   echo "todopath: /tmp/other_path_to_todo.txt" > /etc/shtodo.conf
   echo todo is: $(cat /tmp/other_path_to_todo.txt)
   echo /etc/shtodo.conf is: $(cat /etc/shtodo.conf)
-  run /opt/shtodo
-  [ "$output" = "blah" ]
+
+  out=$(/opt/shtodo)
+  echo output is $out
+  echo $out | grep blah 
 }
