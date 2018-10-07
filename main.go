@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-var command = "print"
+var command string
 var myConfig = &config{}
 
 func main() {
@@ -29,8 +29,10 @@ func topflow() {
 	Fatal(err)
 
 	switch command {
-	case "print":
-		pulltodo()
+	default: //no args.  print the todo
+		if shouldPull(myConfig.getPullInterval()) {
+			pulltodo()
+		}
 		printtodo()
 	case "push":
 		pushtodo()
@@ -48,8 +50,8 @@ func printtodo() {
 
 	var todoContents = readTodo(path)
 
-	touchLastTimeFile()
-	var tbefore = readLastPrintedTodoTime(pathtolasttime)
+	touch(pathToLastPrintTime)
+	var tbefore = readTimeFromFile(pathToLastPrintTime)
 
 	var tnow = time.Now().UTC()
 

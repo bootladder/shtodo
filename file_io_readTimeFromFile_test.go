@@ -14,38 +14,38 @@ func init() {
 	fmt.Println("Test Suite Init")
 }
 
-func Test_ReadLastPrintedTodoTime_ErrorOpening_ReturnsError(t *testing.T) {
+func Test_readTimeFromFile_ErrorOpening_ReturnsError(t *testing.T) {
 
 	usingMockReadFileFail(errors.New("error opening file"))
 
 	assert.Panics(t, func() {
-		readLastPrintedTodoTime("dummyfilenotexists.txt")
-	}, "MockReadFile set to fail, but ReadLastPrintedTodoTime did not panic")
+		readTimeFromFile("dummyfilenotexists.txt")
+	}, "MockReadFile set to fail, but readTimeFromFile did not panic")
 }
 
-func Test_ReadLastPrintedTodoTime_InvalidFormat_ReturnsError(t *testing.T) {
+func Test_readTimeFromFile_InvalidFormat_ReturnsError(t *testing.T) {
 
 	usingMockReadFileSuccess([]byte("300/28-20160 z:31:46 PM"))
 
 	assert.Panics(t, func() {
-		readLastPrintedTodoTime("dummyfilenotexists.txt")
+		readTimeFromFile("dummyfilenotexists.txt")
 	}, "Invalid format in time string, but did not panic")
 }
 
-func Test_ReadLastPrintedTodoTime_ValidFormat_DoesNotPanic(t *testing.T) {
+func Test_readTimeFromFile_ValidFormat_DoesNotPanic(t *testing.T) {
 
 	usingMockReadFileSuccess([]byte("02/28/2016 9:31:46 PM"))
 
 	assert.NotPanics(t, func() {
-		readLastPrintedTodoTime("dummyfilenotexists.txt")
+		readTimeFromFile("dummyfilenotexists.txt")
 	}, "Should Not Panic on valid time but did panic")
 }
 
-func Test_ReadLastPrintedTodoTime_EmptyFile_ReturnsLongTimeAgo(t *testing.T) {
+func Test_readTimeFromFile_EmptyFile_ReturnsLongTimeAgo(t *testing.T) {
 
 	usingMockReadFileSuccess([]byte(""))
 
-	var t1 = readLastPrintedTodoTime("dummyfilenotexists.txt")
+	var t1 = readTimeFromFile("dummyfilenotexists.txt")
 	ttest := time.Time{}
 
 	if t1 != ttest {
