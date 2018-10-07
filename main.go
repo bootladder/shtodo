@@ -47,6 +47,8 @@ func topflow() {
 	case "edit", "e":
 		edittodo()
 		pushtodo()
+	case "cat", "print":
+		printtodo()
 	}
 }
 
