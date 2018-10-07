@@ -92,7 +92,7 @@ pullinterval: 30
 		t.Fatalf("Did not get the correct path from the config file, got %s", str)
 	}
 
-	i = myConfig.getTodoInterval()
+	i = myConfig.getPrintInterval()
 	if i != 30 {
 		t.Fatalf("Did not get the correct path from the config file, got %s", str)
 	}

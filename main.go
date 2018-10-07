@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"time"
 )
 
 var command string
@@ -32,8 +31,12 @@ func topflow() {
 	default: //no args.  print the todo
 		if shouldPull(myConfig.getPullInterval()) {
 			pulltodo()
+			updateLastTimeFile(pathToLastPullTime)
 		}
-		printtodo()
+		if shouldPrint(myConfig.getPrintInterval()) {
+			printtodo()
+			updateLastTimeFile(pathToLastPrintTime)
+		}
 	case "push":
 		pushtodo()
 	case "pull":
@@ -45,20 +48,8 @@ func topflow() {
 }
 
 func printtodo() {
-
-	var path = myConfig.getPathToTodo()
-
-	var todoContents = readTodo(path)
-
-	touch(pathToLastPrintTime)
-	var tbefore = readTimeFromFile(pathToLastPrintTime)
-
-	var tnow = time.Now().UTC()
-
-	if shouldPrint(tnow, tbefore, 30) {
-		fmt.Print(todoContents)
-		updateLastTimeFile(tnow)
-	}
+	var todoContents = readTodo(myConfig.getPathToTodo())
+	fmt.Print(todoContents)
 }
 
 func pushtodo() {

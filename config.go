@@ -39,7 +39,7 @@ func (c *config) getPathToTodo() string {
 	return viper.GetString("todopath")
 }
 
-func (c *config) getTodoInterval() int {
+func (c *config) getPrintInterval() int {
 	return viper.GetInt("todointerval")
 }
 

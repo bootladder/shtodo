@@ -49,16 +49,13 @@ func readTimeFromFile(filename string) time.Time {
 	return tnow
 }
 
-func readLastPullTime() time.Time {
-	return time.Time{}
-}
-
 /*
   Not Tested
 */
-func updateLastTimeFile(tnow time.Time) {
+func updateLastTimeFile(filename string) {
+	var tnow = time.Now().UTC()
 	currentTimeString := tnow.Format(layout)
-	fileHandle, _ := os.Create(pathToLastPrintTime)
+	fileHandle, _ := os.Create(filename)
 	defer fileHandle.Close()
 	writer := bufio.NewWriter(fileHandle)
 	fmt.Fprint(writer, currentTimeString)
