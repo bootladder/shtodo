@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 )
 
-var command string
 var myConfig = &config{}
 
 func main() {
@@ -19,7 +18,7 @@ func main() {
 
 func topflow() {
 
-	// Read Command Line Flags
+	var command string
 	if len(os.Args[1:]) > 0 {
 		command = os.Args[1]
 	}
@@ -36,6 +35,10 @@ func topflow() {
 		if shouldPrint(myConfig.getPrintInterval()) {
 			printtodo()
 			updateLastTimeFile(pathToLastPrintTime)
+		}
+		if shouldPush(myConfig.getPushInterval()) {
+			pushtodo()
+			updateLastTimeFile(pathToLastPushTime)
 		}
 	case "push":
 		pushtodo()

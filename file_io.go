@@ -10,6 +10,7 @@ import (
 
 var pathToLastPrintTime = "/tmp/lasttime.txt"
 var pathToLastPullTime = "/tmp/lastpulltime.txt"
+var pathToLastPushTime = "/tmp/lastpushtime.txt"
 
 //format used in storing last printed time to a file
 var layout = "01/02/2006 3:04:05 PM"

@@ -3,13 +3,15 @@ package main
 import "time"
 
 func shouldPull(interval int) bool {
-
 	return isTimeIntervalPassed(pathToLastPullTime, interval)
 }
 
 func shouldPrint(interval int) bool {
-
 	return isTimeIntervalPassed(pathToLastPrintTime, interval)
+}
+
+func shouldPush(interval int) bool {
+	return isTimeIntervalPassed(pathToLastPushTime, interval)
 }
 
 func isTimeIntervalPassed(filename string, interval int) bool {
