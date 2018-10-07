@@ -29,7 +29,7 @@ func readTodo(filename string) string {
 	Fatal(err, "ReadTodo: ReadFile")
 	str := string(reader)
 	if str == "" {
-		str = "Nothing To Do!"
+		return "Nothing To Do!"
 	}
 	return str
 }

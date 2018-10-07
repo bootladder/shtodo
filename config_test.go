@@ -1,9 +1,8 @@
 package main
 
 import (
-	"testing"
-	//  "github.com/stretchr/testify/assert"
 	"errors"
+	"testing"
 )
 
 func Test_ParseConfigFile_NoReadFileDefined_ReturnsError(t *testing.T) {
@@ -15,10 +14,10 @@ func Test_ParseConfigFile_NoReadFileDefined_ReturnsError(t *testing.T) {
 	}
 }
 
-func Test_ParseConfigFile_FailToRead_Panics(t *testing.T) {
+func Test_ParseConfigFile_FailToRead_ReturnsError(t *testing.T) {
 
-	external.readfile = mockReadFile
-	mockreadfileError = errors.New("FailToRead")
+	usingMockReadFileFail(errors.New("FailToRead"))
+
 	var myConfig = &config{}
 	var err = myConfig.parseConfigFile("dummyfile.txt")
 	if err == nil {
@@ -26,15 +25,13 @@ func Test_ParseConfigFile_FailToRead_Panics(t *testing.T) {
 	}
 }
 
-func Test_ParseConfigFile_ConfigFileOK_DoesNotPanic(t *testing.T) {
+func Test_ParseConfigFile_ConfigFileOK_NilError(t *testing.T) {
 
 	var myInput = `
 # A sample YAML config file.
 todopath: /tmp/hello
 `
-	external.readfile = mockReadFile
-	mockreadfileError = nil
-	mockreadfileBytes = []byte(myInput)
+	usingMockReadFileSuccess([]byte(myInput))
 
 	var myConfig = &config{}
 	var err = myConfig.parseConfigFile("dummyfile.txt")
@@ -43,7 +40,7 @@ todopath: /tmp/hello
 	}
 }
 
-func Test_ParseConfigString_Empty_Panics(t *testing.T) {
+func Test_ParseConfigString_Empty_ReturnsError(t *testing.T) {
 	var myConfig = &config{}
 	var err = myConfig.parseString("")
 	if err == nil {
@@ -51,16 +48,14 @@ func Test_ParseConfigString_Empty_Panics(t *testing.T) {
 	}
 }
 
-func Test_ParseConfigFile_InvalidConfig_Panics(t *testing.T) {
+func Test_ParseConfigFile_InvalidConfig_ReturnsError(t *testing.T) {
 
 	var myInput = `
 z A invalid config file
 \development]
 port = # 8080
 `
-	external.readfile = mockReadFile
-	mockreadfileError = nil
-	mockreadfileBytes = []byte(myInput)
+	usingMockReadFileSuccess([]byte(myInput))
 
 	var myConfig = &config{}
 	var err = myConfig.parseConfigFile("blah")
@@ -69,7 +64,7 @@ port = # 8080
 	}
 }
 
-func Test_GetPathToTodo_ValidConfig_ReturnsCorrectValue(t *testing.T) {
+func Test_ValidConfig_ValuesCanBeQueried(t *testing.T) {
 
 	var myConfig = &config{}
 	var myInput = `
