@@ -1,52 +1,52 @@
 package main
 
 import (
-  "github.com/spf13/viper"
-  "errors"
-  "bytes"
+	"bytes"
+	"errors"
+
+	"github.com/spf13/viper"
 )
 
-type Config struct {
-
+type config struct {
 }
 
-func (c * Config) ParseConfigFile(filename string) error {
+func (c *config) parseConfigFile(filename string) error {
 
-    var b, err = external.readfile(filename)
-    if err != nil {
-        return err
-    }
+	var b, err = external.readfile(filename)
+	if err != nil {
+		return err
+	}
 
-    err = c.ParseString(string(b))
-    return err
+	err = c.parseString(string(b))
+	return err
 }
 
-func (c * Config) ParseString(input string) error {
+func (c *config) parseString(input string) error {
 
-    viper.SetConfigType("yaml")
-    var err = viper.ReadConfig(bytes.NewBufferString(input))
-    if err != nil {
-      return err
-    }
+	viper.SetConfigType("yaml")
+	var err = viper.ReadConfig(bytes.NewBufferString(input))
+	if err != nil {
+		return err
+	}
 
-    if input == "" {
-      return errors.New("hello")
-    }
-    return nil
+	if input == "" {
+		return errors.New("hello")
+	}
+	return nil
 }
 
-func (c * Config) GetPathToTodo() string {
-    return viper.GetString("todopath")
+func (c *config) getPathToTodo() string {
+	return viper.GetString("todopath")
 }
 
-func (c * Config) GetTodoInterval() int {
-    return viper.GetInt("todointerval")
+func (c *config) getTodoInterval() int {
+	return viper.GetInt("todointerval")
 }
 
-func (c * Config) GetPullInterval() int {
-    return viper.GetInt("pullinterval")
+func (c *config) getPullInterval() int {
+	return viper.GetInt("pullinterval")
 }
 
-func (c * Config) GetPushInterval() int {
-    return viper.GetInt("pushinterval")
+func (c *config) getPushInterval() int {
+	return viper.GetInt("pushinterval")
 }

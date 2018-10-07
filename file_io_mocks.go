@@ -1,22 +1,22 @@
 package main
 
-var mockreadfile_bytes []byte = nil
-var mockreadfile_error error = nil
+var mockreadfileBytes []byte
+var mockreadfileError error
 
-func MockReadFile(filename string) ([]byte,error) {
-  return mockreadfile_bytes,mockreadfile_error
+func mockReadFile(filename string) ([]byte, error) {
+	return mockreadfileBytes, mockreadfileError
 }
 
-func usingMockReadFile_Success(myBytes []byte) {
+func usingMockReadFileSuccess(myBytes []byte) {
 
-  external.readfile = MockReadFile
-  mockreadfile_error = nil
-  mockreadfile_bytes = myBytes
+	external.readfile = mockReadFile
+	mockreadfileError = nil
+	mockreadfileBytes = myBytes
 }
 
-func usingMockReadFile_Fail(err error) {
+func usingMockReadFileFail(err error) {
 
-  external.readfile = MockReadFile
-  mockreadfile_error = err
-  mockreadfile_bytes = []byte("doesn't matter")
+	external.readfile = mockReadFile
+	mockreadfileError = err
+	mockreadfileBytes = []byte("doesn't matter")
 }

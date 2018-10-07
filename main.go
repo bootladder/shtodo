@@ -1,97 +1,97 @@
 package main
 
 import (
-    "io/ioutil"
-    "fmt"
-    "time"
-    "os"
-    "os/exec"
-    "path/filepath"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"time"
 )
 
-var command string = "print"
-var myConfig = &Config{}
+var command = "print"
+var myConfig = &config{}
 
 func main() {
 
-    inject()
-    topflow()
+	inject()
+	topflow()
 }
 
 func topflow() {
 
-    // Read Command Line Flags
-    if len(os.Args[1:]) > 0 {
-        command = os.Args[1]
-    }
+	// Read Command Line Flags
+	if len(os.Args[1:]) > 0 {
+		command = os.Args[1]
+	}
 
-    var err = myConfig.ParseConfigFile("/etc/shtodo.conf")
-    Fatal(err)
+	var err = myConfig.parseConfigFile("/etc/shtodo.conf")
+	Fatal(err)
 
-    switch(command) {
-        case "print":
-            pulltodo()
-            printtodo()
-        case "push":
-            pushtodo()
-        case "pull":
-            pulltodo()
-        case "edit", "e":
-            edittodo()
-            pushtodo()
-    }
+	switch command {
+	case "print":
+		pulltodo()
+		printtodo()
+	case "push":
+		pushtodo()
+	case "pull":
+		pulltodo()
+	case "edit", "e":
+		edittodo()
+		pushtodo()
+	}
 }
 
 func printtodo() {
 
-    var path = myConfig.GetPathToTodo()
+	var path = myConfig.getPathToTodo()
 
-    var todoContents string = ReadTodo(path)
+	var todoContents = readTodo(path)
 
-    TouchLastTimeFile()
-    var tbefore time.Time = ReadLastPrintedTodoTime(pathtolasttime)
+	touchLastTimeFile()
+	var tbefore = readLastPrintedTodoTime(pathtolasttime)
 
-    var tnow time.Time = time.Now().UTC()
+	var tnow = time.Now().UTC()
 
-    if ShouldPrint(tnow,tbefore,30) {
-      fmt.Print(todoContents)
-      UpdateLastTimeFile(tnow)
-    }
+	if shouldPrint(tnow, tbefore, 30) {
+		fmt.Print(todoContents)
+		updateLastTimeFile(tnow)
+	}
 }
 
 func pushtodo() {
-    todo_dir := filepath.Dir(myConfig.GetPathToTodo())
-    command := "cd " + todo_dir + ";git commit -am \"hello $(date)\"; " + "git push\n"
-    fmt.Print(command)
-    bash_command(command)
+	todoDir := filepath.Dir(myConfig.getPathToTodo())
+	command := "cd " + todoDir + ";git commit -am \"hello $(date)\"; " + "git push\n"
+	fmt.Print(command)
+	bashCommand(command)
 }
 
 func pulltodo() {
-    todo_dir := filepath.Dir(myConfig.GetPathToTodo())
-    command := "cd " + todo_dir + ";git pull"
-    bash_command(command)
+	todoDir := filepath.Dir(myConfig.getPathToTodo())
+	command := "cd " + todoDir + ";git pull"
+	bashCommand(command)
 }
 func edittodo() {
-    command := "vi " + myConfig.GetPathToTodo()
-    bash_command(command)
+	command := "vi " + myConfig.getPathToTodo()
+	bashCommand(command)
 }
 
-func bash_command(command string) {
-    cmd := exec.Command("bash", "-c", command)
-    cmd.Stdin = os.Stdin
-    cmd.Stdout = os.Stdout
-    cmd.Stderr = os.Stderr
-    _ = cmd.Run()
+func bashCommand(command string) {
+	cmd := exec.Command("bash", "-c", command)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	_ = cmd.Run()
 }
 
 ////////////////////////////////////////////////////////
 
-var external = External{}
-type External struct {
-    readfile func(string) ([]byte,error)
+var external = externalFuncs{}
+
+type externalFuncs struct {
+	readfile func(string) ([]byte, error)
 }
 
 func inject() {
-    external.readfile = ioutil.ReadFile
+	external.readfile = ioutil.ReadFile
 }
-

@@ -1,15 +1,14 @@
 package main
 
 import (
-    "time"
+	"time"
 )
 
+func shouldPrint(tnow, tbefore time.Time, duration int) bool {
 
-func ShouldPrint(tnow,tbefore time.Time, duration int) bool {
-
-  var delta float64 = tnow.Sub(tbefore).Seconds()
-  if int(delta) >= duration {
-    return true
-  }
-  return false
+	var delta = tnow.Sub(tbefore).Seconds()
+	if int(delta) >= duration {
+		return true
+	}
+	return false
 }
