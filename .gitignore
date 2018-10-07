@@ -1,3 +1,4 @@
 shtodo
 *.swp
 tmp
+.vscode

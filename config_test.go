@@ -78,15 +78,35 @@ func Test_GetPathToTodo_ValidConfig_ReturnsCorrectValue(t *testing.T) {
 `
 # A sample YAML config file.
 todopath: "/home/hello/todo.txt"
+todointerval: 30
+pushinterval: 30
+pullinterval: 30
 `
+    var str string
+    var i int
 
     var err = myConfig.ParseString(myInput)
     if err != nil {
       t.Fatalf("Expected No Error on Valid Config")
     }
 
-    var str string = myConfig.GetPathToTodo()
+    str = myConfig.GetPathToTodo()
     if str != "/home/hello/todo.txt" {
+        t.Fatalf("Did not get the correct path from the config file, got %s",str)
+    }
+
+    i = myConfig.GetTodoInterval()
+    if i != 30 {
+        t.Fatalf("Did not get the correct path from the config file, got %s",str)
+    }
+
+    i = myConfig.GetPushInterval()
+    if i != 30 {
+        t.Fatalf("Did not get the correct path from the config file, got %s",str)
+    }
+
+    i = myConfig.GetPullInterval()
+    if i != 30 {
         t.Fatalf("Did not get the correct path from the config file, got %s",str)
     }
 }

@@ -38,3 +38,15 @@ func (c * Config) ParseString(input string) error {
 func (c * Config) GetPathToTodo() string {
     return viper.GetString("todopath")
 }
+
+func (c * Config) GetTodoInterval() int {
+    return viper.GetInt("todointerval")
+}
+
+func (c * Config) GetPullInterval() int {
+    return viper.GetInt("pullinterval")
+}
+
+func (c * Config) GetPushInterval() int {
+    return viper.GetInt("pushinterval")
+}
