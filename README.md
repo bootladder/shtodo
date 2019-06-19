@@ -1,3 +1,5 @@
+# shtodo
+
 Instructions:
 
 - `go install`
@@ -5,7 +7,8 @@ Instructions:
 - Specify where your todo file is.  Make it a git repo
 - add shtodo to your bashrc
 
-What does it do:  
+**What does it do:**  
+
 Print out your todo.txt when you open up a new shell.  
 But not every time, only after a bit of time passes.  
 Pushes and Pulls to github after more time passes  
